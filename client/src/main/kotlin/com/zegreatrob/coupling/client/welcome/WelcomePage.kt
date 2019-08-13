@@ -14,11 +14,13 @@ private val RBuilder.loadedWelcome get() = LoadedWelcome.captor(this)
 
 interface WelcomePageBuilder : SimpleComponentBuilder<PageProps> {
 
-    override fun build() = buildBy {
-        reactElement {
-            loadedWelcome(
-                DataLoadProps { EmptyProps }
-            )
-        }
+    override fun build() = buildByRender()
+
+    override fun PropsBuilder<PageProps>.render() = reactElement {
+        loadedWelcome(
+            DataLoadProps { EmptyProps }
+        )
     }
+
+
 }
