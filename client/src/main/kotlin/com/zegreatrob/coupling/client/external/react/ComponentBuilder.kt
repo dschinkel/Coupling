@@ -7,13 +7,14 @@ interface ComponentBuilder<P : RProps> {
     fun build(): ReactFunctionComponent<P>
 }
 
-interface SimpleComponentBuilder<P : RProps> : ComponentBuilder<P> {
-
+interface ComponentRenderer<P : RProps> {
     fun PropsBuilder<P>.render(): ReactElement
-
 }
 
-inline fun <reified P: RProps> SimpleComponentBuilder<P>.buildByRender() = buildBy { render() }
+interface SimpleComponentBuilder<P : RProps> : ComponentBuilder<P>
+
+inline fun <reified P : RProps, B> B.buildByRender()
+        where B : SimpleComponentBuilder<P>, B : ComponentRenderer<P> = buildBy { render() }
 
 inline fun <reified P : RProps> SimpleComponentBuilder<P>.buildBy(crossinline builder: PropsBuilder<P>.() -> ReactElement) =
     reactFunctionComponent { props: P ->
