@@ -11,7 +11,6 @@ import react.RProps
 import react.ReactElement
 import react.dom.div
 import react.dom.span
-import kotlin.browser.window
 import kotlin.js.Json
 import kotlin.js.json
 
@@ -65,5 +64,5 @@ interface WebsocketMessage {
 
 private fun buildSocketUrl(tribeId: TribeId, useSsl: Boolean): String {
     val protocol = if (useSsl) "wss" else "ws"
-    return "$protocol://${window.location.host}/api/${tribeId.value}/pairAssignments/current"
+    return "$protocol://localhost:3001/api/${tribeId.value}/pairAssignments/current"
 }

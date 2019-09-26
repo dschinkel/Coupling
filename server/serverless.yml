@@ -5,8 +5,25 @@ provider:
   runtime: nodejs12.9.0
   stage: dev
   region: us-east-1
+  logs:
+    websocket: true
+  websocketsApiName: custom-websockets-api-name
+  websocketsApiRouteSelectionExpression: $request.path # custom routes are selected by the value of the action property in the body
 
 functions:
+  connectHandler:
+    handler: build/executable/app.websocketHandler
+    events:
+      - websocket: $connect
+      - websocket: $default
+    environment:
+      NODE_PATH: "build/node_modules_imported"
+  disconnectHandler:
+    handler: build/executable/app.websocketHandler
+    events:
+      - websocket: $disconnect
+    environment:
+      NODE_PATH: "build/node_modules_imported"
   app:
     handler: build/executable/app.handler
     events:

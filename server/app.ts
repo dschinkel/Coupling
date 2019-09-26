@@ -22,6 +22,13 @@ function buildApp() {
 
 export const handler = serverless(buildApp());
 
+
+export function websocketHandler() {
+    console.log("websocket", arguments);
+
+    return {statusCode: 200}
+}
+
 export function start() {
     const app = buildApp();
 
