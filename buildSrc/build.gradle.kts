@@ -22,5 +22,6 @@ dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
     implementation("com.github.node-gradle:gradle-node-plugin:1.3.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.10.1")
 }
 

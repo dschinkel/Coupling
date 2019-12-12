@@ -1,6 +1,8 @@
-
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 import java.io.FileOutputStream
@@ -18,6 +20,13 @@ node {
     download = true
 }
 
+
+val packageJsonPath = "${projectDir.path}/package.json"
+println("package json $packageJsonPath")
+val packageJson = ObjectMapper().readTree(File(packageJsonPath))
+
+val packageJsonDevDeps = packageJson["devDependencies"].dependencies()
+
 kotlin {
     target {
         browser {
@@ -30,6 +39,12 @@ kotlin {
     sourceSets {
         val main by getting {
             resources.srcDir("src/main/javascript")
+
+            dependencies {
+                packageJsonDevDeps.forEach {
+                    implementation(npm(it.first, it.second.asText()))
+                }
+            }
         }
     }
 }
@@ -65,7 +80,7 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
 
-    val browserWebpack by getting {
+    val browserWebpack by getting(KotlinWebpack::class) {
         enabled = false
     }
 
@@ -207,4 +222,8 @@ tasks {
 
     forEach { if (!it.name.startsWith("clean")) it.mustRunAfter("clean") }
 
+}
+
+fun JsonNode.dependencies() = fields().asSequence().map { entry ->
+    entry.key to entry.value
 }
