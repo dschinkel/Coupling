@@ -7,6 +7,7 @@ import kotlinx.css.properties.LineHeight
 import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.RBuilder
+import react.RHandler
 import react.RProps
 import react.dom.i
 import react.dom.span
@@ -25,6 +26,30 @@ data class PinButtonProps(
     val onClick: () -> Unit = {}
 ) : RProps
 
+
+val RBuilder.lolololButton get() = ::PinButtonProps.extend(::mehmeh).compose(renderMagically(PinButton))
+
+fun <P : RProps> mehmeh(pinButtonProps: P, key: String? = null, handler: RHandler<P> = {}) = Triple(
+    pinButtonProps,
+    key,
+    handler
+)
+
+inline fun <reified P : RProps, C : Function<P>> RBuilder.renderMagically(component: RComponent<P>) =
+    { (props: P, key: String?): Triple<P, String?, RHandler<P>> ->
+        child(component.component.rFunction, props, key)
+    }
+
+infix fun <A, B, C, D, E, F, G> ((A, B, C, D, E) -> F).compose(after: (F) -> G) =
+    { a: A, b: B, c: C, d: D, e: E -> after(this(a, b, c, d, e)) }
+
+infix fun <A, B, C, D, E, F, G, H, I> ((A, B, C, D, E, F, G) -> H).compose(after: (H) -> I) =
+    { a: A, b: B, c: C, d: D, e: E, f: F, g: G -> after(this(a, b, c, d, e, f, g)) }
+
+
+infix fun <A, B, C, D, E, F, G, H, I> ((A, B, C, D, E) -> F).extend(after: (F, G, H) -> I) =
+    { a: A, b: B, c: C, d: D, e: E, g: G, h: H -> after(this(a, b, c, d, e), g, h) }
+
 object PinButton : FRComponent<PinButtonProps>(provider()) {
 
     fun RBuilder.pinButton(
@@ -41,6 +66,15 @@ object PinButton : FRComponent<PinButtonProps>(provider()) {
     override fun render(props: PinButtonProps) = reactElement {
         val (pin, scale) = props
         val styles = useStyles("pin/PinButton")
+
+        val kFunction5 = ::PinButtonProps
+
+        kFunction5(pin)
+
+        PinButtonProps(pin)
+
+        lolololButton(pin)
+
 
         styledDiv {
             attrs {
