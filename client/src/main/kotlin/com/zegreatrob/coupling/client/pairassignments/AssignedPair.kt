@@ -80,10 +80,10 @@ object AssignedPair : FRComponent<AssignedPairProps>(provider()) {
     )
 
     private fun AssignedPairProps.playerCardComponent(canDrag: Boolean): RBuilder.(PinnedPlayer) -> ReactElement =
-        if (canDrag) { player ->
+        if (canDrag) { pinPlayer ->
             swappablePlayer(
                 tribe,
-                player,
+                pinPlayer,
                 pair,
                 pairAssignmentDocument,
                 swapCallback

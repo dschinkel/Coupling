@@ -1,15 +1,20 @@
 package com.zegreatrob.coupling.client.pairassignments
 
 import com.zegreatrob.coupling.client.external.react.*
+import com.zegreatrob.coupling.client.external.reactfliptoolkit.flipped
 import com.zegreatrob.coupling.client.pairassignments.DraggableThing.draggableThing
 import com.zegreatrob.coupling.client.player.PlayerCardProps
 import com.zegreatrob.coupling.client.player.playerCard
 import com.zegreatrob.coupling.model.pairassignmentdocument.PairAssignmentDocument
 import com.zegreatrob.coupling.model.pairassignmentdocument.PinnedPlayer
 import com.zegreatrob.coupling.model.tribe.Tribe
+import kotlinx.css.Display
+import kotlinx.css.display
 import react.RBuilder
 import react.RProps
 import react.ReactElement
+import styled.css
+import styled.styledDiv
 
 object DraggablePlayer : RComponent<DraggablePlayerProps>(provider()), DraggablePlayerBuilder
 
@@ -37,16 +42,21 @@ interface DraggablePlayerBuilder : StyledComponentRenderer<DraggablePlayerProps,
     override fun StyledRContext<DraggablePlayerProps, DraggablePlayerStyles>.render(): ReactElement = with(props) {
         reactElement {
             draggableThing(playerDragItemType, pinnedPlayer.player.id!!, onPlayerDrop) { isOver: Boolean ->
-                playerCard(
-                    PlayerCardProps(
-                        tribeId = tribe.id,
-                        player = pinnedPlayer.player,
-                        pathSetter = {},
-                        headerDisabled = false,
-                        className = playerCardClassName(pairAssignmentDocument, isOver, styles)
-                    ),
-                    key = pinnedPlayer.player.id
-                )
+                flipped(flipId = pinnedPlayer.player.id) {
+                    styledDiv {
+                        css { display = Display.inlineBlock }
+                        playerCard(
+                            PlayerCardProps(
+                                tribeId = tribe.id,
+                                player = pinnedPlayer.player,
+                                pathSetter = {},
+                                headerDisabled = false,
+                                className = playerCardClassName(pairAssignmentDocument, isOver, styles)
+                            ),
+                            key = pinnedPlayer.player.id
+                        )
+                    }
+                }
             }
         }
     }

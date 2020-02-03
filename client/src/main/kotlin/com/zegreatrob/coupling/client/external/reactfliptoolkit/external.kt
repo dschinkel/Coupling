@@ -11,6 +11,7 @@ external val Flipper: RClass<FlipperProps>
 external interface FlipperProps : RProps {
     var flipKey: String
     var className: String?
+    var debug: Boolean
 }
 
 @JsName("Flipped")
