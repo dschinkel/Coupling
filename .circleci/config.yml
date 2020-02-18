@@ -5,7 +5,6 @@ jobs:
       - image: openjdk:13-jdk
       - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
-      - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
       JVM_OPTS:
@@ -23,7 +22,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew build check"
+      - run: "./gradlew build check -x endToEndTest"
       - run:
           name: Copy test results
           command: |
@@ -43,6 +42,33 @@ jobs:
           root: ./
           paths:
             - "*"
+  e2e:
+    docker:
+      - image: openjdk:8-jdk
+      - image: circleci/mongo:latest
+      - image: amazon/dynamodb-local
+      - image: selenium/standalone-chrome
+    steps:
+      - attach_workspace:
+          at: ./
+      - restore_cache:
+          key: coupling-cache-30-{{ .Branch }}
+      - run: "./gradlew build check"
+      - run:
+          name: Copy test results
+          command: |
+            mkdir -p build/test-output/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/test-output/junit/{} \;
+          when: always
+      - run:
+          name: Copy test reports
+          command: |
+            ./gradlew copyReportsToCircleCIDirectory
+          when: always
+      - store_artifacts:
+          path: build/test-output
+      - store_test_results:
+          path: build/test-output
   deploy-prod:
     docker:
       - image: openjdk:8-jdk
@@ -63,7 +89,8 @@ jobs:
   update-client:
     docker:
       - image: openjdk:8-jdk
-      - image: mongo:latest
+      - image: circleci/mongo:latest
+      - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
@@ -85,7 +112,8 @@ jobs:
   update-server:
     docker:
       - image: openjdk:8-jdk
-      - image: mongo:latest
+      - image: circleci/mongo:latest
+      - image: amazon/dynamodb-local
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
@@ -109,9 +137,11 @@ workflows:
   build-deploy:
     jobs:
       - build
+      - e2e
       - deploy-prod:
           requires:
             - build
+            - e2e
           filters:
             branches:
               only: master
