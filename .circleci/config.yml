@@ -5,9 +5,7 @@ jobs:
       - image: circleci/openjdk:9-jdk
       - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
-        command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/
-        volumes:
-          - ./dynamodb_data:/home/dynamodblocal/data
+        command: -jar DynamoDBLocal.jar -sharedDb -dbPath /dynamodblocal
       - image: selenium/standalone-chrome
     environment:
       SELENIUM_ADDRESS: http://localhost:4444/wd/hub
