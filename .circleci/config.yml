@@ -3,7 +3,6 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:9-jdk
-      - image: circleci/mongo:latest
       - image: amazon/dynamodb-local
         command: -jar DynamoDBLocal.jar -sharedDb
       - image: selenium/standalone-chrome
@@ -25,7 +24,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew compile --no-daemon"
-      - run: "./gradlew build check"
+      - run: "./gradlew build check -x :mongo:jsNodeTest"
       - run:
           name: Copy test results
           command: |
