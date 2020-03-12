@@ -2,6 +2,7 @@ package com.zegreatrob.coupling.server
 
 import com.benasher44.uuid.Uuid
 import com.soywiz.klock.TimeProvider
+import com.zegreatrob.coupling.dynamo.DynamoUserRepository
 import com.zegreatrob.coupling.model.user.User
 import com.zegreatrob.coupling.mongo.user.MongoUserRepository
 import com.zegreatrob.coupling.repository.pairassignmentdocument.PairAssignmentDocumentRepository
@@ -26,12 +27,12 @@ suspend fun commandDispatcher(
     scope: CoroutineScope,
     traceId: Uuid?
 ): CommandDispatcher {
-    val repositoryCatalog = MongoRepositoryCatalog(userCollection, jsRepository, user)
+    val repositoryCatalog = DynamoRepositoryCatalog(user.email, TimeProvider)
     return CommandDispatcher(user, repositoryCatalog, scope, traceId)
 }
 
-suspend fun userRepository(userCollection: dynamic, userEmail: String) =
-    mongoUserRepository(userCollection, userEmail)
+suspend fun userRepository(userCollection: dynamic, userEmail: String) = DynamoUserRepository(userEmail, TimeProvider)
+//    mongoUserRepository(userCollection, userEmail)
 
 private fun mongoUserRepository(userCollection: dynamic, userEmail: String) = object : MongoUserRepository {
     override val userCollection = userCollection
