@@ -24,7 +24,7 @@ jobs:
             - "node_modules"
             - "/root/.konan"
       - run: "./gradlew compile --no-daemon"
-      - run: "./gradlew build check -x :mongo:jsNodeTest"
+      - run: "./gradlew build check -x :mongo:jsNodeTest --no-parallel"
       - run:
           name: Copy test results
           command: |
