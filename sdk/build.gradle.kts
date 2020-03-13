@@ -122,7 +122,9 @@ tasks {
             compileKotlinJs,
             compileTestKotlinJs,
             compileEndpointTestKotlinJs,
-            ":server:build"
+            ":server:build",
+            ":dynamo:check",
+            ":mongo:check"
         )
         val script = projectDir.path + "/endpoint-wrapper.js"
         inputs.file(script)
