@@ -26,12 +26,14 @@ suspend fun commandDispatcher(
     scope: CoroutineScope,
     traceId: Uuid?
 ): CommandDispatcher {
-    val repositoryCatalog = MongoRepositoryCatalog(userCollection, jsRepository, user)
+    val repositoryCatalog = CompoundRepositoryCatalog(
+        MongoRepositoryCatalog(userCollection, jsRepository, user),
+        DynamoRepositoryCatalog(user.email, TimeProvider)
+    )
     return CommandDispatcher(user, repositoryCatalog, scope, traceId)
 }
 
-suspend fun userRepository(userCollection: dynamic, userEmail: String) =
-    mongoUserRepository(userCollection, userEmail)
+suspend fun userRepository(userCollection: dynamic, userEmail: String) = mongoUserRepository(userCollection, userEmail)
 
 private fun mongoUserRepository(userCollection: dynamic, userEmail: String) = object : MongoUserRepository {
     override val userCollection = userCollection
