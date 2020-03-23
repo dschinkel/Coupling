@@ -21,7 +21,7 @@ kotlin {
     target {
         browser {
             testTask {
-                enabled = false
+//                enabled = false
             }
         }
     }
@@ -56,7 +56,7 @@ dependencies {
     packageJson.dependencies().forEach {
         implementation(npm(it.first, it.second.asText()))
     }
-    
+
     testImplementation(project(":stub-model"))
     testImplementation(project(":test-logging"))
     testImplementation("org.jetbrains.kotlin:kotlin-test-common")
@@ -66,8 +66,10 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:async-js:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
 
+    val ignoredDependencies = listOf("karma", "karma-webpack", "karma-sourcemap-loader","karma-chrome-launcher")
     packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
+        if (!ignoredDependencies.contains(it.first))
+            testImplementation(npm(it.first, it.second.asText()))
     }
 }
 
