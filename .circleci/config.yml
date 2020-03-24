@@ -26,7 +26,7 @@ jobs:
             - "client/.gradle"
             - "node_modules"
             - "/root/.konan"
-      - run: "./gradlew compile --no-daemon"
+      - run: "./gradlew compile"
       - run: "./gradlew build check"
       - run:
           name: Copy test results
@@ -79,6 +79,7 @@ jobs:
       - restore_cache:
           key: coupling-cache-34-{{ .Branch }}
       - run: "./gradlew :client:updateDependencies"
+      - run: "./gradlew kotlinNodeJsSetup"
       - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - run: "./gradlew compile --no-daemon"
@@ -107,7 +108,8 @@ jobs:
       - restore_cache:
           key: coupling-cache-34-{{ .Branch }}
       - run: "./gradlew :server:updateDependencies"
-      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall --no-parallel"
+      - run: "./gradlew kotlinNodeJsSetup"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall"
       - run: "./gradlew yarn"
       - run: "./gradlew compile --no-daemon"
       - run: "./gradlew build check"

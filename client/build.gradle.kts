@@ -1,9 +1,9 @@
+
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
-import java.io.FileOutputStream
 
 plugins {
     kotlin("js")
@@ -75,10 +75,6 @@ val nodeEnv = System.getenv("COUPLING_NODE_ENV") ?: "production"
 
 tasks {
 
-    val browserWebpack by getting {
-//        enabled = false
-    }
-
     val clean by getting {
         doLast {
             delete(file("build/lib"))
@@ -100,65 +96,9 @@ tasks {
     val processDceKotlinJs by getting(KotlinJsDce::class) {
     }
 
-    val browserProductionWebpack by getting {
-//        enabled = false
-    }
-
-    val vendorCompile by creating(YarnTask::class) {
-        dependsOn(yarn, processDceKotlinJs, compileKotlinJs)
-        mustRunAfter("clean")
-
-        inputs.files(fileTree("../build/js/packages/Coupling-client/kotlin-dce").matching {
-            exclude("Coupling-*")
-        })
-        inputs.file(file("package.json"))
-        inputs.file(file("yarn.lock"))
-        inputs.files("${rootProject.buildDir.path}/js/packages_imported")
-        inputs.file(file("vendor.webpack.config.js"))
-        outputs.dir("build/lib/vendor")
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-        args = listOf("webpack", "--config", "vendor.webpack.config.js")
-    }
-
-    task<YarnTask>("compile") {
-        dependsOn(yarn, vendorCompile, processDceKotlinJs, processResources)
-        inputs.file(file("package.json"))
-        inputs.files(processDceKotlinJs.outputs)
-        inputs.file(file("webpack.config.js"))
-        inputs.file(file("tsconfig.json"))
-        inputs.files("build/lib/vendor")
-        inputs.files("build/processedResources")
-        outputs.dir("build/lib/main")
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-        args = listOf("webpack", "--config", "webpack.config.js")
-    }
-
     val updateDependencies by creating(YarnTask::class) {
         dependsOn(yarn)
         args = listOf("run", "ncu", "-u")
-    }
-
-    task<YarnTask>("stats") {
-        dependsOn(yarn, vendorCompile)
-
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-        args = listOf("-s", "webpack", "--json", "--profile", "--config", "webpack.config.js")
-
-        setExecOverrides(closureOf<ExecSpec> {
-            file("build/report").mkdirs()
-            standardOutput = FileOutputStream(file("build/report/stats.json"))
-        })
-    }
-
-    task<YarnTask>("vendorStats") {
-        dependsOn(yarn, processDceKotlinJs)
-        setEnvironment(mapOf("NODE_ENV" to nodeEnv))
-        args = listOf("-s", "webpack", "--json", "--profile", "--config", "vendor.webpack.config.js")
-
-        setExecOverrides(closureOf<ExecSpec> {
-            file("build/report").mkdirs()
-            standardOutput = FileOutputStream(file("build/report/vendor.stats.json"))
-        })
     }
 
     forEach { if (!it.name.startsWith("clean")) it.mustRunAfter("clean") }

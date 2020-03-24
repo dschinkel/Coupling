@@ -177,7 +177,7 @@ tasks {
         dependsOn(assemble, updateWebdriver, compileEndToEndTestKotlinJs)
         mustRunAfter(serverTest, ":client:test", ":sdk:endpointTest")
         inputs.files(findByPath(":client:test")?.inputs?.files)
-        inputs.files(findByPath(":client:compile")?.outputs?.files)
+        inputs.files(findByPath(":client:assemble")?.outputs?.files)
         inputs.files(serverTest.inputs.files)
         inputs.files(serverCompile.outputs.files)
         inputs.files(compileEndToEndTestKotlinJs.outputs.files)
