@@ -121,8 +121,8 @@ tasks {
     }
 
     val copyClient by creating(Copy::class) {
-        dependsOn(":client:compile", copyServerResources)
-        from("../client/build/lib")
+        dependsOn(":client:assemble", copyServerResources)
+        from("../client/build/distributions")
         into("build/executable/public/app/build")
     }
 

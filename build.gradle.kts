@@ -27,7 +27,6 @@ allprojects {
             from("build/reports")
             into("${rootProject.buildDir.path}/test-output/${project.path}")
         }
-
     }
 
     afterEvaluate {
