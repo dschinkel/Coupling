@@ -15,7 +15,8 @@ jobs:
       - checkout
       - restore_cache:
           key: coupling-cache-34-{{ .Branch }}
-      - run: "./gradlew yarn packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall --info"
+      - run: "./gradlew packageJson testPackageJson jsEndpointTestPackageJson endToEndTestPackageJson kotlinNpmInstall --info"
+      - run: "./gradlew yarn"
       - save_cache:
           key: coupling-cache-34-{{ .Branch }}
           paths:
