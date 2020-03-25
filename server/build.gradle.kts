@@ -60,7 +60,7 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:1.8.9")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
-    
+
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-logging"))
     testImplementation("com.zegreatrob.testmints:standard:+")
