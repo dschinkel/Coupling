@@ -60,33 +60,12 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:1.8.9")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
-
-    packageJson.dependencies().forEach {
-        implementation(npm(it.first, it.second.asText()))
-    }
-
+    
     testImplementation(kotlin("test-js"))
     testImplementation(project(":test-logging"))
     testImplementation("com.zegreatrob.testmints:standard:+")
     testImplementation("com.zegreatrob.testmints:minassert:+")
     testImplementation("com.zegreatrob.testmints:async-js:+")
-
-    packageJson.devDependencies().forEach {
-        testImplementation(npm(it.first, it.second.asText()))
-    }
-
-    val ignoredDependencies = listOf(
-        "webpack",
-        "webpack-cli",
-        "source-map-loader",
-        "webpack-cleanup-plugin",
-        "webpack-node-externals",
-        "source-map-support"
-    )
-    packageJson.devDependencies().forEach {
-        if (!ignoredDependencies.contains(it.first))
-            testImplementation(npm(it.first, it.second.asText()))
-    }
 
 }
 
