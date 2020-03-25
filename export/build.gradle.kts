@@ -7,7 +7,7 @@ plugins {
 kotlin {
     targets {
         jvm()
-        js { nodejs() }
+        js { nodejs(); produceExecutable() }
     }
 
     sourceSets {

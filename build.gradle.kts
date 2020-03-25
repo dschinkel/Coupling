@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 plugins {
     id("com.github.node-gradle.node") apply false
-    id("com.bmuschko.docker-remote-api") version "6.3.0"
+    id("com.bmuschko.docker-remote-api") version "6.4.0"
     id("se.patrikerdes.use-latest-versions") version "0.2.13"
     id("com.github.ben-manes.versions") version "0.28.0"
     id("net.rdrei.android.buildtimetracker") version "0.11.0"
@@ -17,6 +17,7 @@ allprojects {
     repositories {
         mavenCentral()
         jcenter()
+        maven("https://dl.bintray.com/kotlin/kotlin-eap")
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("https://dl.bintray.com/robertfmurdock/zegreatrob") }
         maven { url = uri("https://dl.bintray.com/kotlin/kotlin-js-wrappers") }

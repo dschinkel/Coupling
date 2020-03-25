@@ -1,18 +1,21 @@
 repositories {
     jcenter()
     maven { url = uri("https://plugins.gradle.org/m2/") }
+    mavenCentral()
+    maven("https://dl.bintray.com/kotlin/kotlin-eap")
+    maven("https://kotlin.bintray.com/kotlinx")
 }
 
 plugins {
     id("java")
     id("java-gradle-plugin")
     id("maven-publish")
-    id("org.jetbrains.kotlin.jvm").version("1.3.71")
+    id("org.jetbrains.kotlin.jvm").version("1.4-M1")
     id("com.jfrog.bintray") version "1.7.3"
     id("net.researchgate.release") version "2.6.0"
 }
 
-val kotlinVersion = "1.3.71"
+val kotlinVersion = "1.4-M1"
 
 dependencies {
     implementation(kotlin("stdlib", kotlinVersion))
@@ -26,6 +29,6 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:1.8.9")
     implementation("org.apache.logging.log4j:log4j-core:2.13.1")
     implementation("org.slf4j:slf4j-api:1.7.30")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.10.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.11.0.rc1")
 }
 

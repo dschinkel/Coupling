@@ -1,4 +1,3 @@
-
 import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
@@ -20,6 +19,7 @@ node {
 kotlin {
     target {
         browser {}
+        produceExecutable()
     }
 
     sourceSets {
@@ -41,7 +41,7 @@ dependencies {
     implementation("com.soywiz.korlibs.klock:klock:1.8.9")
     implementation("io.github.microutils:kotlin-logging-js:1.7.9")
     implementation("com.benasher44:uuid:0.0.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.4-M1")
     implementation("org.jetbrains:kotlin-extensions:1.0.1-pre.93-kotlin-1.3.70")
     implementation("org.jetbrains:kotlin-css:1.0.0-pre.93-kotlin-1.3.70")
     implementation("org.jetbrains:kotlin-styled:1.0.0-pre.93-kotlin-1.3.70")
@@ -63,7 +63,7 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:minassert:+")
 
     val ignoredDependencies = listOf(
-        "karma", "karma-webpack", "karma-sourcemap-loader", "karma-chrome-launcher", "webpack"
+        "karma", "karma-webpack", "karma-sourcemap-loader", "karma-chrome-launcher", "webpack", "webpack-cli"
     )
     packageJson.devDependencies().forEach {
         if (!ignoredDependencies.contains(it.first))
@@ -91,9 +91,6 @@ tasks {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
-    val processDceKotlinJs by getting(KotlinJsDce::class) {
     }
 
     val updateDependencies by creating(YarnTask::class) {

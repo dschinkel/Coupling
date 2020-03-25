@@ -1,11 +1,10 @@
-
 import com.moowork.gradle.node.task.NodeTask
 import com.zegreatrob.coupling.build.BuildConstants
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
-    id("kotlinx-serialization") version "1.3.71"
+    id("kotlinx-serialization") version "1.4-M1"
     id("com.github.node-gradle.node")
 }
 
@@ -31,11 +30,11 @@ kotlin {
                 api(project(":model"))
                 api(project(":repository"))
                 api("org.jetbrains.kotlin:kotlin-stdlib-common:${BuildConstants.kotlinVersion}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.4")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5-1.4-M1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.3.5-1.4-M1")
                 api("com.soywiz.korlibs.klock:klock:1.8.9")
                 implementation("io.github.microutils:kotlin-logging-common:1.7.9")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.3.70-eap-274-2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:0.20.0-1.4-M1")
             }
         }
         val commonTest by getting {
@@ -58,9 +57,9 @@ kotlin {
                 implementation(npm("axios", "^0.19.0"))
                 implementation(npm("ws", "^7.2.0"))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js:${BuildConstants.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.5-1.4-M1")
                 implementation("io.github.microutils:kotlin-logging-js:1.7.9")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.3.70-eap-274-2")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:0.20.0-1.4-M1")
             }
         }
 

@@ -14,23 +14,3 @@ pluginManagement {
         }
     }
 }
-
-rootProject.name = "Coupling"
-include("model")
-include("json")
-include("mongo")
-include("dynamo")
-include("client")
-include("repository")
-include("repository:compound")
-include("repository:memory")
-include("repository:validation")
-include("sdk")
-include("server")
-include("server:server_action")
-include("action")
-include("logging")
-include("export")
-include("import")
-include("stub-model")
-include("test-logging")
