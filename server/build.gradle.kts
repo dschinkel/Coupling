@@ -74,6 +74,20 @@ dependencies {
     packageJson.devDependencies().forEach {
         testImplementation(npm(it.first, it.second.asText()))
     }
+
+    val ignoredDependencies = listOf(
+        "webpack",
+        "webpack-cli",
+        "source-map-loader",
+        "webpack-cleanup-plugin",
+        "webpack-node-externals",
+        "source-map-support"
+    )
+    packageJson.devDependencies().forEach {
+        if (!ignoredDependencies.contains(it.first))
+            testImplementation(npm(it.first, it.second.asText()))
+    }
+
 }
 
 tasks {

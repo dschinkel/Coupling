@@ -3,7 +3,6 @@ import com.moowork.gradle.node.yarn.YarnTask
 import com.zegreatrob.coupling.build.BuildConstants
 import com.zegreatrob.coupling.build.loadPackageJson
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
-import org.jetbrains.kotlin.gradle.tasks.KotlinJsDce
 
 plugins {
     kotlin("js")
@@ -63,7 +62,13 @@ dependencies {
     testImplementation("com.zegreatrob.testmints:minassert:+")
 
     val ignoredDependencies = listOf(
-        "karma", "karma-webpack", "karma-sourcemap-loader", "karma-chrome-launcher", "webpack"
+        "karma",
+        "karma-webpack",
+        "karma-sourcemap-loader",
+        "karma-chrome-launcher",
+        "webpack",
+        "webpack-cli",
+        "source-map-loader"
     )
     packageJson.devDependencies().forEach {
         if (!ignoredDependencies.contains(it.first))
@@ -91,9 +96,6 @@ tasks {
         kotlinOptions.moduleKind = "commonjs"
         kotlinOptions.sourceMap = true
         kotlinOptions.sourceMapEmbedSources = "always"
-    }
-
-    val processDceKotlinJs by getting(KotlinJsDce::class) {
     }
 
     val updateDependencies by creating(YarnTask::class) {
