@@ -70,6 +70,7 @@ dependencies {
         "connect-dynamodb",
         "connect-mongo",
         "cookie-parser",
+        "core-js",
         "errorhandler",
         "express",
         "express-session",
