@@ -39,6 +39,8 @@ jobs:
       JAVA_TOOL_OPTIONS: -XX:MaxRAM=2g
       GRADLE_OPTS: -XX:+HeapDumpOnOutOfMemoryError
     steps:
+      - restore_cache:
+          key: coupling-cache-35-{{ .Branch }}
       - attach_workspace:
           at: ./
       - run: "./gradlew build check --no-parallel"
